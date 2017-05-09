@@ -126,7 +126,6 @@
 				TargetAttributes = {
 					09E1C0EC1EBCCCC400A0D99F = {
 						CreatedOnToolsVersion = 8.3.1;
-						DevelopmentTeam = ASCBU5GTTV;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -341,7 +340,7 @@
 			baseConfigurationReference = 9D6994FB81EA7D7E8DBB6319 /* Pods-ChatMe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = ASCBU5GTTV;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ChatMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.JaredAlberto.ChatMe;
@@ -355,7 +354,7 @@
 			baseConfigurationReference = D3E9164814B1AC20229D8C54 /* Pods-ChatMe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = ASCBU5GTTV;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ChatMe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.JaredAlberto.ChatMe;
