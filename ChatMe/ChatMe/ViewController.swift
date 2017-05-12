@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import Firebase
 
 class ViewController: UIViewController {
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        if let refreshedToken = FIRInstanceID.instanceID().token(){
+            print(refreshedToken)
+        }
     }
 
     override func didReceiveMemoryWarning() {
