@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "09E1C0EC1EBCCCC400A0D99F"
+               BlueprintIdentifier = "096433C11ECCBA6500F36037"
                BuildableName = "ChatMe.app"
                BlueprintName = "ChatMe"
                ReferencedContainer = "container:ChatMe.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "09E1C0EC1EBCCCC400A0D99F"
+            BlueprintIdentifier = "096433C11ECCBA6500F36037"
             BuildableName = "ChatMe.app"
             BlueprintName = "ChatMe"
             ReferencedContainer = "container:ChatMe.xcodeproj">
@@ -55,7 +55,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "09E1C0EC1EBCCCC400A0D99F"
+            BlueprintIdentifier = "096433C11ECCBA6500F36037"
             BuildableName = "ChatMe.app"
             BlueprintName = "ChatMe"
             ReferencedContainer = "container:ChatMe.xcodeproj">
@@ -74,7 +74,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "09E1C0EC1EBCCCC400A0D99F"
+            BlueprintIdentifier = "096433C11ECCBA6500F36037"
             BuildableName = "ChatMe.app"
             BlueprintName = "ChatMe"
             ReferencedContainer = "container:ChatMe.xcodeproj">

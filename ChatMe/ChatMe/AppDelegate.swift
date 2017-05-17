@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  ChatMe
 //
-//  Created by Jared Fitton on 5/5/17.
-//  Copyright © 2017 JaredFitton. All rights reserved.
+//  Created by Jared Fitton on 5/17/17.
+//  Copyright © 2017 JaredAlberto. All rights reserved.
 //
 
 import UIKit
@@ -13,16 +13,11 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
-    func applicationDidFinishLaunching(_ application: UIApplication) {
-        FIRApp.configure()
-        
-    }
 
-    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FIRApp.configure()
         return true
     }
 
