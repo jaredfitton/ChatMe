@@ -20,16 +20,33 @@ class Conversation {
     }
     
     var messages: [[String]]!
-    var recipients: [[String]]!
+    var recipients: [String]!
     var ref = FIRDatabase.database().reference()
 
-    init(recipients: [[String]], conversationToken: String) {
-        self.conversationToken = conversationToken
+    init(conversationToken: String) {
         
+        self.conversationToken = conversationToken
+        messages = [[]] as! [[String]]
+        numberOfUsedCodes = 0
+        
+        ref.child("Conversations/\(conversationToken)/Recipients").observeSingleEvent(of: .value, with: { (snapshot) in
+            var users = snapshot.value as! [String]
+            
+            self.ref.child("Usernames/\((FIRAuth.auth()?.currentUser?.uid)!)").observeSingleEvent(of: .value, with: { (snapshot) in
+                let currentUser = snapshot.value as! String
+                for i in 0...(users.count-1) {
+                    if users[i] == currentUser {
+                        users.remove(at: i)
+                        break
+                    }
+                }
+                self.recipients = users
+                print(self.recipients)
+            })
+        })
     }
     
-    init(recipients: [[String]]) {
-        
+    init(recipients: [String]) {
         self.recipients = recipients
         
         messages = [[]] as! [[String]]
@@ -38,17 +55,27 @@ class Conversation {
             let usedCodes = snapshot.value as! [String]
             self.numberOfUsedCodes = usedCodes.count
             self.conversationToken = self.generateToken(usedCodes: usedCodes) //Generate a new token for this conversation
+            
+            self.ref.child("Usernames/\((FIRAuth.auth()?.currentUser?.uid)!)").observeSingleEvent(of: .value, with: { (snapshot) in
+                let currentUser = snapshot.value as! String
+                var users = recipients
+                for i in 0...(users.count-1) {
+                    if users[i] == currentUser {
+                        users.remove(at: i)
+                        break
+                    }
+                }
+                self.recipients = users
+                print(self.recipients)
+            })
+            
+            self.ref.child("Conversations/\(self.conversationToken!)/Recipients").setValue(self.getRecipients())
         })
+        
     }
     
-    func getRecipientNames() -> [String] {
-        var recipientNames = [] as! [String]
-        
-        for r in recipients {
-            recipientNames.append(r[1])
-        }
-        
-        return recipientNames
+    func getRecipients() -> [String] {
+        return recipients
     }
    
     func generateToken(usedCodes: [String]) -> String {
@@ -65,7 +92,7 @@ class Conversation {
         //Add Conversation Token to UsedConversationTokens on Firebase
         
         for userName in recipients { //Add Conversation Token to each recipient's list of conversations
-            ref.child("Users/\(userName[0])/Conversation_Tokens").observeSingleEvent(of: .value, with: { (snapshot) in
+            ref.child("Users/\(userName)/Conversation_Tokens").observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 var numberOfConversations: Int?
                 numberOfConversations = Int(snapshot.childrenCount)
@@ -73,7 +100,16 @@ class Conversation {
                 if numberOfConversations == nil {
                     numberOfConversations = 0
                 }
-                self.ref.child("Users/\(userName[0])/Conversation_Tokens").updateChildValues(["\(numberOfConversations!)":self.conversationToken])
+                self.ref.child("Users/\(userName)/Conversation_Tokens").updateChildValues(["\(numberOfConversations!)":self.conversationToken])
+                
+                
+                let UID = FIRAuth.auth()?.currentUser?.uid
+                self.ref.child("Usernames/\(UID!)").observeSingleEvent(of: .value, with: { (snapshot) in
+                    if (snapshot.value! as! String) == userName {
+                        print("Found")
+                    }
+                })
+            
             })
         }
     }
@@ -95,7 +131,7 @@ class Conversation {
         //peopleToRecieve?.remove(at: 0)
         
         for user in recipients {
-            ref.child("Conversations/\(conversationToken!)/\(user[1])").updateChildValues([message[0]:message[1]])
+            ref.child("Conversations/\(conversationToken!)/\(user)").updateChildValues([message[0]:message[1]])
         }
     }
     

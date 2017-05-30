@@ -16,15 +16,18 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        ref.child("Conversations").observe(FIRDataEventType.value, with: { (snapshot) in
-//            print("Children: \(snapshot.value)")
-//            let dict = snapshot.value as! Dictionary<String, AnyObject>
-//            let keys = Array(dict.keys)
-//            print(keys)
-//        })
+        FIRAuth.auth()?.signIn(withEmail: "jaredfitton@gmail.com", password: "password", completion: { user, error in
+            if error == nil {
+            print("Logged In")
+            } else {
+            print("Error")
+            }
+        })
 
         
-        var testConvo = Conversation(recipients: [["jaredfiton", "Jared"],["alberto8gil", "Alberto"]])
+        //var testConvo = Conversation(recipients: ["alberto8gil","jaredfitton"])
+        var joinConvo = Conversation(conversationToken: "4PtJYJ0FA2")
+        //print(joinConvo.getRecipients())
     }
 
     
