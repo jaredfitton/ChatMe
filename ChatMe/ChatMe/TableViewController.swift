@@ -17,17 +17,23 @@ import Firebase
 
 class TableViewController: UITableViewController {
     let array = ["zero","one","two","three","four","five","six"]
+    let ref = FIRDatabase.database().reference()
+    var convos: [Conversation]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        convos = [] as! [Conversation]
+        
         FIRAuth.auth()?.signIn(withEmail: "jaredfitton@gmail.com", password: "password", completion: { user, error in
             if error == nil {
                 print("Logged In")
+                self.loadConversations()
             } else {
                 print("Error")
             }
         })
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -35,9 +41,21 @@ class TableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-
+    func loadConversations() {
+        //load convo ids from firebase
+        var username = ""
+        ref.child("Usernames/\((FIRAuth.auth()?.currentUser?.uid)!)").observeSingleEvent(of: .value, with: { (snapshot) in
+            username = snapshot.value as! String
+            
+            self.ref.child("Users/\(username)/Conversation_Tokens").observeSingleEvent(of: .value, with: { (snapshot) in
+                let token = snapshot.value as! [String]
+                
+                for t in token {
+                    self.convos.insert(Conversation(conversationToken: t, tableView: self.tableView), at: 0)
+                }
+                print("Done Loading")
+            })
+        })
     }
 
 
@@ -48,15 +66,24 @@ class TableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 7 //arrayOfConversations.length
+        return convos.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Conversation", for: indexPath) as! TableViewCell
 
-        cell.name.text = array[indexPath.row]
-        cell.message.text = "I am your father."
+        let recipientsArray = convos[indexPath.row].getRecipients()
+        var recipients = recipientsArray[0]
+        
+        if recipientsArray.count > 1 {
+            for i in 1...recipientsArray.count-1 {
+                recipients.append(", \(recipientsArray[i])")
+            }
+        }
+        
+        cell.name.text = recipients
+        cell.message.text = "Last Message Here."
 
         return cell
     }

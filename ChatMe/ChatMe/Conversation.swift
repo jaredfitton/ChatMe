@@ -23,7 +23,7 @@ class Conversation {
     var recipients: [String]!
     var ref = FIRDatabase.database().reference()
 
-    init(conversationToken: String) {
+    init(conversationToken: String, tableView: UITableView) {
         
         self.conversationToken = conversationToken
         messages = [[]] as! [[String]]
@@ -41,6 +41,7 @@ class Conversation {
                     }
                 }
                 self.recipients = users
+                tableView.reloadData()
                 print(self.recipients)
             })
         })
