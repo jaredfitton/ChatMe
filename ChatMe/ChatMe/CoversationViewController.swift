@@ -46,25 +46,19 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        print(conversation.getCurrentUser())
-        
-        ref.child("Conversations/\(conversation.getConversationToken())/Jenny").observe(FIRDataEventType.value, with: { (snapshot) in
+        ref.child("Conversations/\(conversation.getConversationToken())/\(conversation.getCurrentUser())").observe(FIRDataEventType.value, with: { (snapshot) in
             let pulledMessages = snapshot.value as! [[String:String]]
             for m in pulledMessages {
-                print(m)
+                //Add message to the UI
+                conversation.addMessage(message: [m.keys:m[m.keys]])
             }
         })
-        
-        // Do any additional setup after loading the view.
         print(conversation.getRecipients())
     }
     
     @IBAction func sendMessage(_ sender: UIButton) {
-        print("Pressed Send")
+        //Add message to the UI
         conversation.sendMessage(message: textField.text!)
-//        for user in conversation.getRecipients() {
-//            ref.child("Conversations/\(conversation.getConversationToken())/\(user)").updateChildValues([conversation.getCurrentUser():textField.text!])
-//        }
     }
     
     func keyboardWillAppear(_ notification: NSNotification){
