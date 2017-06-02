@@ -24,22 +24,7 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         contentView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         
         textField.delegate = self
-        for message in conversation.getMessages(){
-            if(message[0] == conversation.getCurrentUser()){
-                let label = UILabel(frame: CGRect(x: Int(self.view.frame.width/2), y: 100, width: 100, height: 50))
-                    label.text = message[1]
-                    label.layer.masksToBounds = true
-                    label.layer.cornerRadius = 10
-                    contentView?.addSubview(label)
-            }else{
-                let label = UILabel(frame: CGRect(x: 30, y:100, width: 100, height: 50))
-                    label.text = message[1]
-                    label.backgroundColor = UIColor.white
-                    label.layer.masksToBounds = true
-                    label.layer.cornerRadius = 15
-                    contentView?.addSubview(label)
-            }
-        }
+        loadMessagesIntoView()
         conversationScrollView.contentSize = (contentView?.bounds.size)!
         conversationScrollView.addSubview(contentView!)
         self.view.addSubview(conversationScrollView)
@@ -47,17 +32,42 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         ref.child("Conversations/\(conversation.getConversationToken())/\(conversation.getCurrentUser())").observe(FIRDataEventType.value, with: { (snapshot) in
-            let pulledMessages = snapshot.value as! [[String:String]]
-            for m in pulledMessages {
-                //Add message to the UI
-                conversation.addMessage(message: [m.keys:m[m.keys]])
+            let pulledMessages = snapshot.value as? [[String:String]]
+            if let messages = pulledMessages {
+                for m in pulledMessages! {
+                    //Add message to the UI
+                    self.loadMessagesIntoView()
+                    print(m)
+                    for (key, value) in m {
+                        self.conversation.addMessage(message: [key, value])
+                    }
+                }
             }
         })
         print(conversation.getRecipients())
     }
+    func loadMessagesIntoView(){
+        for message in conversation.getMessages(){
+            if(message[0] == conversation.getCurrentUser()){
+                let label = UILabel(frame: CGRect(x: Int(self.view.frame.width/2), y: 100, width: 100, height: 50))
+                label.text = message[1]
+                label.layer.masksToBounds = true
+                label.layer.cornerRadius = 10
+                contentView?.addSubview(label)
+            }else{
+                let label = UILabel(frame: CGRect(x: 30, y:100, width: 100, height: 50))
+                label.text = message[1]
+                label.backgroundColor = UIColor.white
+                label.layer.masksToBounds = true
+                label.layer.cornerRadius = 15
+                contentView?.addSubview(label)
+            }
+        }
+    }
     
     @IBAction func sendMessage(_ sender: UIButton) {
         //Add message to the UI
+        loadMessagesIntoView()
         conversation.sendMessage(message: textField.text!)
     }
     

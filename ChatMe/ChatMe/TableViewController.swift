@@ -23,7 +23,7 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        convos = [] as! [Conversation]
+        convos = [Conversation]()
         
         loadConversations()
         
