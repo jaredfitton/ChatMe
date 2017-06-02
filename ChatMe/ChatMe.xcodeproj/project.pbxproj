@@ -87,8 +87,8 @@
 				0925EA851EE1CDC700214DC0 /* LoginViewController.swift */,
 				0925EA871EE1D14D00214DC0 /* InitialViewController.swift */,
 				096433C91ECCBA6500F36037 /* Main.storyboard */,
-				096433CC1ECCBA6500F36037 /* Assets.xcassets */,
 				096433CE1ECCBA6500F36037 /* LaunchScreen.storyboard */,
+				096433CC1ECCBA6500F36037 /* Assets.xcassets */,
 				096433D11ECCBA6500F36037 /* Info.plist */,
 				096433D71ECCBAA000F36037 /* GoogleService-Info.plist */,
 			);

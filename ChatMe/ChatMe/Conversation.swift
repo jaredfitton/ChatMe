@@ -133,7 +133,7 @@ class Conversation {
     }
     
     func sendMessage(message: String) {
-        messages.append([message, currentUser])
+        messages.append([currentUser, message])
         
         for user in recipients! {
             ref.child("Conversations/\(conversationToken!)/\(user)").observeSingleEvent(of: .value, with: { (snapshot) in

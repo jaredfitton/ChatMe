@@ -19,47 +19,53 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print(conversation.getMessages())
-        contentView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
-        
         textField.delegate = self
-        loadMessagesIntoView()
-        conversationScrollView.contentSize = (contentView?.bounds.size)!
-        conversationScrollView.addSubview(contentView!)
-        self.view.addSubview(conversationScrollView)
+        
+//        contentView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 3000))
+//        conversationScrollView.contentSize = (contentView?.bounds.size)!
+//        conversationScrollView.addSubview(contentView!)
+//        self.view.addSubview(conversationScrollView)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         ref.child("Conversations/\(conversation.getConversationToken())/\(conversation.getCurrentUser())").observe(FIRDataEventType.value, with: { (snapshot) in
             let pulledMessages = snapshot.value as? [[String:String]]
+            self.ref.child("Conversations/\(self.conversation.getConversationToken())/\(self.conversation.getCurrentUser())").removeValue()
             if let messages = pulledMessages {
-                for m in pulledMessages! {
+                for m in messages {
                     //Add message to the UI
-                    self.loadMessagesIntoView()
-                    print(m)
                     for (key, value) in m {
                         self.conversation.addMessage(message: [key, value])
                     }
                 }
             }
+            self.loadMessagesIntoView()
         })
-        print(conversation.getRecipients())
     }
+    
     func loadMessagesIntoView(){
-        for message in conversation.getMessages(){
+        contentView = UIView(frame: CGRect(x: 0, y: 0, width: Int(self.view.frame.width), height: conversation.getMessages().count
+        * 55 + 10))
+        conversationScrollView.contentSize = (contentView?.bounds.size)!
+        conversationScrollView.addSubview(contentView!)
+        self.view.addSubview(conversationScrollView)
+        print(conversation.getMessages())
+        for (i, message) in conversation.getMessages().enumerated(){
             if(message[0] == conversation.getCurrentUser()){
-                let label = UILabel(frame: CGRect(x: Int(self.view.frame.width/2), y: 100, width: 100, height: 50))
+                let label = UILabel(frame: CGRect(x: Int(self.view.frame.width - CGFloat(message[1].characters.count*10)), y: 55 * i + 10, width: message[1].characters.count * 10, height: 50))
                 label.text = message[1]
+                label.backgroundColor = UIColor.white
                 label.layer.masksToBounds = true
                 label.layer.cornerRadius = 10
+                label.textAlignment = .center
                 contentView?.addSubview(label)
             }else{
-                let label = UILabel(frame: CGRect(x: 30, y:100, width: 100, height: 50))
+                let label = UILabel(frame: CGRect(x: 30, y:55 * i + 10, width: message[1].characters.count * 10, height: 50))
                 label.text = message[1]
                 label.backgroundColor = UIColor.white
                 label.layer.masksToBounds = true
                 label.layer.cornerRadius = 15
+                label.textAlignment = .center
                 contentView?.addSubview(label)
             }
         }
@@ -67,8 +73,8 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func sendMessage(_ sender: UIButton) {
         //Add message to the UI
-        loadMessagesIntoView()
         conversation.sendMessage(message: textField.text!)
+        loadMessagesIntoView()
     }
     
     func keyboardWillAppear(_ notification: NSNotification){
