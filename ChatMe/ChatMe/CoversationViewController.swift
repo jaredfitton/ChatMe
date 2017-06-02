@@ -27,12 +27,13 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         for message in conversation.getMessages(){
             if(message[0] == conversation.getCurrentUser()){
                 let label = UILabel(frame: CGRect(x: Int(self.view.frame.width/2), y: 100, width: 100, height: 50))
-                    label.text = message[0]
+                    label.text = message[1]
+                    label.layer.masksToBounds = true
                     label.layer.cornerRadius = 10
                     contentView?.addSubview(label)
             }else{
                 let label = UILabel(frame: CGRect(x: 30, y:100, width: 100, height: 50))
-                    label.text = message[0]
+                    label.text = message[1]
                     label.backgroundColor = UIColor.white
                     label.layer.masksToBounds = true
                     label.layer.cornerRadius = 15
