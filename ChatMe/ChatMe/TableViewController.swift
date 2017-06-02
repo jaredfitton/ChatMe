@@ -133,6 +133,7 @@ class TableViewController: UITableViewController {
         let indexPath = tableView.indexPath(for: sender as! TableViewCell)!
         let selectedConvo = convos[indexPath.row]
         convoVC.conversation = selectedConvo
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
