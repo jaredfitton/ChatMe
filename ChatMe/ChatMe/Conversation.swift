@@ -26,7 +26,7 @@ class Conversation {
     init(conversationToken: String, tableView: UITableView) {
         
         self.conversationToken = conversationToken
-        messages = [[]] as! [[String]]
+        messages = [[String]]()
         numberOfUsedCodes = 0
         currentUser = ""
         
@@ -51,7 +51,7 @@ class Conversation {
     init(recipients: [String]) {
         self.recipients = recipients
         currentUser = ""
-        messages = [[]] as! [[String]]
+        messages = [[String]]()
 
         ref.child("UsedConversationTokens").observeSingleEvent(of: .value, with: { (snapshot) in //Get used tokens from Firebase
             let usedCodes = snapshot.value as! [String]
