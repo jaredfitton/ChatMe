@@ -18,7 +18,7 @@ class Conversation {
             addConversationTokensToFirebase()
         }
     }
-    
+    var currentUser: String
     var messages: [[String]]!
     var recipients: [String]!
     var ref = FIRDatabase.database().reference()
@@ -28,14 +28,15 @@ class Conversation {
         self.conversationToken = conversationToken
         messages = [[]] as! [[String]]
         numberOfUsedCodes = 0
+        currentUser = ""
         
         ref.child("Conversations/\(conversationToken)/Recipients").observeSingleEvent(of: .value, with: { (snapshot) in
             var users = snapshot.value as! [String]
             
             self.ref.child("Usernames/\((FIRAuth.auth()?.currentUser?.uid)!)").observeSingleEvent(of: .value, with: { (snapshot) in
-                let currentUser = snapshot.value as! String
+                self.currentUser = snapshot.value as! String
                 for i in 0...(users.count-1) {
-                    if users[i] == currentUser {
+                    if users[i] == self.currentUser {
                         users.remove(at: i)
                         break
                     }
@@ -49,7 +50,7 @@ class Conversation {
     
     init(recipients: [String]) {
         self.recipients = recipients
-        
+        currentUser = ""
         messages = [[]] as! [[String]]
 
         ref.child("UsedConversationTokens").observeSingleEvent(of: .value, with: { (snapshot) in //Get used tokens from Firebase
@@ -58,10 +59,10 @@ class Conversation {
             self.conversationToken = self.generateToken(usedCodes: usedCodes) //Generate a new token for this conversation
             
             self.ref.child("Usernames/\((FIRAuth.auth()?.currentUser?.uid)!)").observeSingleEvent(of: .value, with: { (snapshot) in
-                let currentUser = snapshot.value as! String
+                self.currentUser = snapshot.value as! String
                 var users = recipients
                 for i in 0...(users.count-1) {
-                    if users[i] == currentUser {
+                    if users[i] == self.currentUser {
                         users.remove(at: i)
                         break
                     }
@@ -79,6 +80,14 @@ class Conversation {
         return recipients
     }
    
+    func getConversationToken() -> String {
+        return conversationToken
+    }
+    
+    func getCurrentUser() -> String {
+        return currentUser
+    }
+    
     func generateToken(usedCodes: [String]) -> String {
         var token = randomString(length: 10)
         
@@ -119,20 +128,14 @@ class Conversation {
         return messages
     }
     
-    func addMessage(message: [String]) {
-        messages.append(message)
-    }
-    
-    func sendMessage(message: [String]) {
-        messages.append(message)
+    func sendMessage(message: String) {
+        messages.append([message, currentUser])
         
-        //Remove the array at the index that contains the senders name
-        
-        //var peopleToRecieve = recipients
-        //peopleToRecieve?.remove(at: 0)
-        
-        for user in recipients {
-            ref.child("Conversations/\(conversationToken!)/\(user)").updateChildValues([message[0]:message[1]])
+        for user in recipients! {
+            ref.child("Conversations/\(conversationToken!)/\(user)").observeSingleEvent(of: .value, with: { (snapshot) in
+                let messageCount = snapshot.childrenCount
+                self.ref.child("Conversations/\(self.conversationToken!)/\(user)/\(messageCount)").updateChildValues([self.currentUser:message])
+            })
         }
     }
     

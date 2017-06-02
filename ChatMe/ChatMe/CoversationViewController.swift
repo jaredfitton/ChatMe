@@ -7,15 +7,22 @@
 //
 
 import UIKit
+import Firebase
 import QuartzCore
 
 class CoversationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var conversationScrollView: UIScrollView!
     @IBOutlet weak var textField: UITextField!
     
+    
+    var conversation: Conversation!
+    let ref = FIRDatabase.database().reference()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(conversation.getMessages())
+        
         textField.delegate = self
 //        if(sender == me){
 //            for i in 0...10{
@@ -26,7 +33,6 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
 //            }
 //        }else{
             for i in 0...10{
-                print(100*i)
                 let label = UILabel(frame: CGRect(x: 30, y:100*i, width: 100, height: 50))
                 label.text = "Hello World"//messages[messages.length-1]
                 label.backgroundColor = UIColor.white
@@ -38,11 +44,27 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        print(conversation.getCurrentUser())
         
-        
+        ref.child("Conversations/\(conversation.getConversationToken())/Jenny").observe(FIRDataEventType.value, with: { (snapshot) in
+            let pulledMessages = snapshot.value as! [[String:String]]
+            for m in pulledMessages {
+                print(m)
+            }
+        })
         
         // Do any additional setup after loading the view.
+        print(conversation.getRecipients())
     }
+    
+    @IBAction func sendMessage(_ sender: UIButton) {
+        print("Pressed Send")
+        conversation.sendMessage(message: textField.text!)
+//        for user in conversation.getRecipients() {
+//            ref.child("Conversations/\(conversation.getConversationToken())/\(user)").updateChildValues([conversation.getCurrentUser():textField.text!])
+//        }
+    }
+    
     func keyboardWillAppear(_ notification: NSNotification){
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             self.view.frame.origin.y -= keyboardSize.height

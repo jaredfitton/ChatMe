@@ -53,7 +53,6 @@ class TableViewController: UITableViewController {
                 for t in token {
                     self.convos.insert(Conversation(conversationToken: t, tableView: self.tableView), at: 0)
                 }
-                print("Done Loading")
             })
         })
     }
@@ -124,14 +123,19 @@ class TableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let convoVC = segue.destination as! CoversationViewController
+        
+        let indexPath = tableView.indexPath(for: sender as! TableViewCell)!
+        let selectedConvo = convos[indexPath.row]
+        convoVC.conversation = selectedConvo
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+ 
 
 }
