@@ -125,10 +125,10 @@
             </objects>
             <point key="canvasLocation" x="290.625" y="-38.028169014084504"/>
         </scene>
-        <!--View Controller-->
+        <!--Initial View Controller-->
         <scene sceneID="RKf-ld-DyG">
             <objects>
-                <viewController id="uc1-4W-xNu" sceneMemberID="viewController">
+                <viewController id="uc1-4W-xNu" customClass="InitialViewController" customModule="ChatMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ERA-Zs-5OL"/>
                         <viewControllerLayoutGuide type="bottom" id="WSX-PA-y2J"/>
@@ -154,7 +154,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="BkN-EJ-GHB" kind="presentation" id="cw6-ob-lds"/>
+                                    <segue destination="BkN-EJ-GHB" kind="presentation" modalTransitionStyle="crossDissolve" id="cw6-ob-lds"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7nJ-77-aFB">
@@ -167,7 +167,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="EzU-CA-kbh" kind="presentation" id="bn4-YL-cVr"/>
+                                    <segue destination="EzU-CA-kbh" kind="presentation" modalTransitionStyle="crossDissolve" id="bn4-YL-cVr"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mfp-CO-cUY">
@@ -189,15 +189,18 @@
                             <constraint firstItem="mfp-CO-cUY" firstAttribute="top" secondItem="ERA-Zs-5OL" secondAttribute="bottom" constant="116" id="xhF-gc-K1D"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <segue destination="8cE-c7-Rmv" kind="presentation" identifier="toMainScreen" modalTransitionStyle="crossDissolve" id="sRL-UY-hjM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I15-yO-Lpf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3561" y="-38"/>
+            <point key="canvasLocation" x="-3555" y="-57"/>
         </scene>
-        <!--View Controller-->
+        <!--Register View Controller-->
         <scene sceneID="bJb-dr-2mr">
             <objects>
-                <viewController id="BkN-EJ-GHB" sceneMemberID="viewController">
+                <viewController id="BkN-EJ-GHB" customClass="RegisterViewController" customModule="ChatMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SRg-TF-EOj"/>
                         <viewControllerLayoutGuide type="bottom" id="xqb-OD-usA"/>
@@ -220,6 +223,9 @@
                                         <integer key="value" value="3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="backButton:" destination="BkN-EJ-GHB" eventType="touchUpInside" id="5yf-kE-BdI"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BMr-p3-OeM">
                                 <rect key="frame" x="90.5" y="32" width="139" height="24"/>
@@ -414,6 +420,9 @@
                                         <integer key="value" value="3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="createAccountButton:" destination="BkN-EJ-GHB" eventType="touchUpInside" id="NA5-F5-Yzl"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.32156862745098036" blue="0.81176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -439,15 +448,21 @@
                             <constraint firstItem="DFZ-mR-ikm" firstAttribute="top" secondItem="SRg-TF-EOj" secondAttribute="bottom" constant="6" id="yoD-yR-237"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="confirmPassword" destination="dvG-wi-XeO" id="OhV-ki-Ed2"/>
+                        <outlet property="email" destination="YyL-56-bah" id="Fct-Jb-3GG"/>
+                        <outlet property="name" destination="wkP-kb-wad" id="vQW-TX-5mA"/>
+                        <outlet property="password" destination="ziH-c4-30P" id="jmI-Qx-um8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0hI-r7-gvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2332.5" y="-486.97183098591552"/>
         </scene>
-        <!--View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="Qbb-c7-pFw">
             <objects>
-                <viewController storyboardIdentifier="segueToMainScreen" id="EzU-CA-kbh" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="segueToMainScreen" id="EzU-CA-kbh" customClass="LoginViewController" customModule="ChatMe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TL6-Do-pvo"/>
                         <viewControllerLayoutGuide type="bottom" id="6lm-XQ-r2h"/>
@@ -463,6 +478,9 @@
                                     <constraint firstAttribute="height" constant="36" id="I0g-42-KKM"/>
                                 </constraints>
                                 <state key="normal" backgroundImage="BackIcon"/>
+                                <connections>
+                                    <action selector="backButton:" destination="EzU-CA-kbh" eventType="touchUpInside" id="ksJ-S4-9q7"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WpB-n4-ZGD">
                                 <rect key="frame" x="129.5" y="32" width="61" height="24"/>
@@ -569,6 +587,9 @@
                                         <integer key="value" value="3"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="loginButton:" destination="EzU-CA-kbh" eventType="touchUpInside" id="Ecm-GL-6MR"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.32156862745098036" blue="0.81176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -588,6 +609,11 @@
                             <constraint firstAttribute="trailingMargin" secondItem="CqX-tq-4Ec" secondAttribute="trailing" id="zf9-mA-EOL"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="email" destination="PW4-cT-Nfg" id="IKB-P1-yDK"/>
+                        <outlet property="password" destination="Liv-SB-of9" id="aS4-Wb-rGH"/>
+                        <segue destination="8cE-c7-Rmv" kind="presentation" identifier="segueToMainScreen" modalTransitionStyle="crossDissolve" id="bLC-9v-fsf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GYq-al-RNa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -601,4 +627,7 @@
         <image name="mail-icon" width="256" height="180"/>
         <image name="name" width="512" height="512"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="sRL-UY-hjM"/>
+    </inferredMetricsTieBreakers>
 </document>

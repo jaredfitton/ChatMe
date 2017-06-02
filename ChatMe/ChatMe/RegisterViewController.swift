@@ -23,8 +23,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         password.delegate = self
         confirmPassword.delegate = self
         name.delegate = self
-        
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -43,14 +41,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if confirmPassword.isEditing && self.view.frame.origin.y != 0 {
-            self.view.frame.origin.y += 110
-            print("was done")
-        }
-        return true
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == self.name {
             email.becomeFirstResponder()
@@ -64,13 +54,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         if textField == self.confirmPassword {
             textField.resignFirstResponder()
             attemptToCreateAccount()
-        }
-        return true
-    }
-    
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if self.view.frame.size.height < 568 && textField == self.confirmPassword {
-            self.view.frame.origin.y -= 110
         }
         return true
     }
@@ -123,11 +106,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         let ref = FIRDatabase.database().reference()
         
         if let user = FIRAuth.auth()?.currentUser {
-            ref.child("users").child(user.uid)
-            ref.child("users").child(user.uid).child("Name").setValue(name.text!)
-            ref.child("users").child(user.uid).child("Email").setValue(email.text!)
-            ref.child("users").child(user.uid).child("Used Codes").setValue(["codes"])
-            ref.child("users").child(user.uid).child("Points").setValue(0)
+            ref.child("Usernames/\((FIRAuth.auth()?.currentUser?.uid)!)").setValue(name.text!)
             
             func login(action: UIAlertAction) {
                 FIRAuth.auth()?.signIn(withEmail: email.text!, password: password.text!, completion: {
@@ -148,6 +127,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         } else {
             alert(title: "Try again", message: "Something went wrong")
         }
+    }
+    
+    @IBAction func backButton(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     

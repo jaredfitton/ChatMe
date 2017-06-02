@@ -25,14 +25,7 @@ class TableViewController: UITableViewController {
         
         convos = [] as! [Conversation]
         
-        FIRAuth.auth()?.signIn(withEmail: "jaredfitton@gmail.com", password: "password", completion: { user, error in
-            if error == nil {
-                print("Logged In")
-                self.loadConversations()
-            } else {
-                print("Error")
-            }
-        })
+        loadConversations()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

@@ -128,6 +128,10 @@ class Conversation {
         return messages
     }
     
+    func addMessage(message: [String]) {
+        messages.append(message)
+    }
+    
     func sendMessage(message: String) {
         messages.append([message, currentUser])
         

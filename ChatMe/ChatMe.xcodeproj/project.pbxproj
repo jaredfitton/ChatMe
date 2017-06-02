@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0925EA841EE1C15A00214DC0 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0925EA831EE1C15A00214DC0 /* RegisterViewController.swift */; };
+		0925EA861EE1CDC700214DC0 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0925EA851EE1CDC700214DC0 /* LoginViewController.swift */; };
+		0925EA881EE1D14D00214DC0 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0925EA871EE1D14D00214DC0 /* InitialViewController.swift */; };
 		096433C61ECCBA6500F36037 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096433C51ECCBA6500F36037 /* AppDelegate.swift */; };
 		096433C81ECCBA6500F36037 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 096433C71ECCBA6500F36037 /* ViewController.swift */; };
 		096433CB1ECCBA6500F36037 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 096433C91ECCBA6500F36037 /* Main.storyboard */; };
@@ -23,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		0925EA831EE1C15A00214DC0 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		0925EA851EE1CDC700214DC0 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		0925EA871EE1D14D00214DC0 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		096433C21ECCBA6500F36037 /* ChatMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		096433C51ECCBA6500F36037 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		096433C71ECCBA6500F36037 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +84,8 @@
 				09FA9F281EDDCDA800C8636C /* Conversation.swift */,
 				755B171D1ED5EFB7006744CD /* CoversationViewController.swift */,
 				0925EA831EE1C15A00214DC0 /* RegisterViewController.swift */,
+				0925EA851EE1CDC700214DC0 /* LoginViewController.swift */,
+				0925EA871EE1D14D00214DC0 /* InitialViewController.swift */,
 				096433C91ECCBA6500F36037 /* Main.storyboard */,
 				096433CC1ECCBA6500F36037 /* Assets.xcassets */,
 				096433CE1ECCBA6500F36037 /* LaunchScreen.storyboard */,
@@ -233,7 +239,9 @@
 				09FA9F291EDDCDA800C8636C /* Conversation.swift in Sources */,
 				096433C81ECCBA6500F36037 /* ViewController.swift in Sources */,
 				0925EA841EE1C15A00214DC0 /* RegisterViewController.swift in Sources */,
+				0925EA881EE1D14D00214DC0 /* InitialViewController.swift in Sources */,
 				75EBAD3C1ED489290013FEDF /* TableViewCell.swift in Sources */,
+				0925EA861EE1CDC700214DC0 /* LoginViewController.swift in Sources */,
 				755B171E1ED5EFB7006744CD /* CoversationViewController.swift in Sources */,
 				752A3DB61ED33ED70047237A /* TableViewController.swift in Sources */,
 				096433C61ECCBA6500F36037 /* AppDelegate.swift in Sources */,
