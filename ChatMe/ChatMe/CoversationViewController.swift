@@ -54,7 +54,7 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
             if(message[0] == conversation.getCurrentUser()){
                 let label = UILabel(frame: CGRect(x: Int(self.view.frame.width - CGFloat(message[1].characters.count*10)), y: 55 * i + 10, width: message[1].characters.count * 10, height: 50))
                 label.text = message[1]
-                label.backgroundColor = UIColor.white
+                label.backgroundColor = UIColor.cyan
                 label.layer.masksToBounds = true
                 label.layer.cornerRadius = 10
                 label.textAlignment = .center
