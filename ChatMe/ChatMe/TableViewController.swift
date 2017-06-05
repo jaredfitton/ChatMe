@@ -41,10 +41,10 @@ class TableViewController: UITableViewController {
             username = snapshot.value as! String
             
             self.ref.child("Users/\(username)/Conversation_Tokens").observeSingleEvent(of: .value, with: { (snapshot) in
-                let token = snapshot.value as! [String]
-                
-                for t in token {
-                    self.convos.insert(Conversation(conversationToken: t, tableView: self.tableView), at: 0)
+                if let token = snapshot.value as? [String] {
+                    for t in token {
+                        self.convos.insert(Conversation(conversationToken: t, tableView: self.tableView), at: 0)
+                    }
                 }
             })
         })
@@ -65,21 +65,22 @@ class TableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Conversation", for: indexPath) as! TableViewCell
 
-        let recipientsArray = convos[indexPath.row].getRecipients()
-        var recipients = recipientsArray[0]
+        let conversation = convos[indexPath.row]
+        let allRecipients = conversation.getRecipients()
+        var recipients = allRecipients[0]
         
-        if recipientsArray.count > 1 {
-            for i in 1...recipientsArray.count-1 {
-                recipients.append(", \(recipientsArray[i])")
+        if allRecipients.count > 1 {
+            for i in 1...allRecipients.count-1 {
+                recipients.append(", \(allRecipients[i])")
             }
         }
         
         cell.name.text = recipients
-        cell.message.text = "Last Message Here."
+        cell.message.text = conversation.getMessages().last?[1] 
 
         return cell
     }
-    
+
 
     /*
     // Override to support conditional editing of the table view.
@@ -116,6 +117,24 @@ class TableViewController: UITableViewController {
     }
     */
 
+    
+    @IBAction func newMessage(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "New Conversation", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: {
+            alert -> Void in
+            let firstTextField = alert.textFields![0] as UITextField
+        }))
+        
+        alert.addTextField(configurationHandler: { (textField : UITextField!) -> Void in
+            textField.placeholder = "Enter Recipient's Username"
+        })
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
     
     // MARK: - Navigation
 

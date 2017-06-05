@@ -21,14 +21,13 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         textField.delegate = self
         
-//        contentView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 3000))
-//        conversationScrollView.contentSize = (contentView?.bounds.size)!
-//        conversationScrollView.addSubview(contentView!)
-//        self.view.addSubview(conversationScrollView)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        
         ref.child("Conversations/\(conversation.getConversationToken())/\(conversation.getCurrentUser())").observe(FIRDataEventType.value, with: { (snapshot) in
+            print("Called")
             let pulledMessages = snapshot.value as? [[String:String]]
             self.ref.child("Conversations/\(self.conversation.getConversationToken())/\(self.conversation.getCurrentUser())").removeValue()
             if let messages = pulledMessages {
@@ -43,26 +42,33 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         })
     }
     
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
     func loadMessagesIntoView(){
+        
         contentView = UIView(frame: CGRect(x: 0, y: 0, width: Int(self.view.frame.width), height: conversation.getMessages().count
         * 55 + 10))
         conversationScrollView.contentSize = (contentView?.bounds.size)!
         conversationScrollView.addSubview(contentView!)
         self.view.addSubview(conversationScrollView)
+        
         print(conversation.getMessages())
+        
         for (i, message) in conversation.getMessages().enumerated(){
             if(message[0] == conversation.getCurrentUser()){
-                let label = UILabel(frame: CGRect(x: Int(self.view.frame.width - CGFloat(message[1].characters.count*10)), y: 55 * i + 10, width: message[1].characters.count * 10, height: 50))
+                let label = UILabel(frame: CGRect(x: Int(self.view.frame.width - 15 - CGFloat(message[1].characters.count*10)), y: 55 * i + 10, width: message[1].characters.count * 10, height: 50))
                 label.text = message[1]
-                label.backgroundColor = UIColor.cyan
+                label.backgroundColor = UIColor(red: 1, green: 1/86, blue: 1/107, alpha: 1)
                 label.layer.masksToBounds = true
                 label.layer.cornerRadius = 10
                 label.textAlignment = .center
                 contentView?.addSubview(label)
-            }else{
-                let label = UILabel(frame: CGRect(x: 30, y:55 * i + 10, width: message[1].characters.count * 10, height: 50))
+            } else {
+                let label = UILabel(frame: CGRect(x: 15, y:55 * i + 10, width: message[1].characters.count * 10, height: 50))
                 label.text = message[1]
-                label.backgroundColor = UIColor.white
+                label.backgroundColor = UIColor(red: 0, green: 82, blue: 207, alpha: 1)
                 label.layer.masksToBounds = true
                 label.layer.cornerRadius = 15
                 label.textAlignment = .center
@@ -73,8 +79,11 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func sendMessage(_ sender: UIButton) {
         //Add message to the UI
-        conversation.sendMessage(message: textField.text!)
-        loadMessagesIntoView()
+        if textField.text != "" {
+            conversation.sendMessage(message: textField.text!)
+            textField.text = ""
+            loadMessagesIntoView()
+        }
     }
     
     func keyboardWillAppear(_ notification: NSNotification){
@@ -86,11 +95,14 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             self.view.frame.origin.y += keyboardSize.height
         }
-    
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if textField.text != "" {
+            conversation.sendMessage(message: textField.text!)
+            textField.text = ""
+            loadMessagesIntoView()
+        }
         return true
     }
 
@@ -98,10 +110,10 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     override func resignFirstResponder() -> Bool {
         return true
     }
-    
 
     /*
     // MARK: - Navigation

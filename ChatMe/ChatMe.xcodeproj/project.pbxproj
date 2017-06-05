@@ -147,6 +147,7 @@
 				TargetAttributes = {
 					096433C11ECCBA6500F36037 = {
 						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = ASCBU5GTTV;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -368,7 +369,7 @@
 			baseConfigurationReference = AC1167992F5B72DF613CED1B /* Pods-ChatMe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ASCBU5GTTV;
 				INFOPLIST_FILE = ChatMe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -383,7 +384,7 @@
 			baseConfigurationReference = CA96B91CF50B17B943B180AF /* Pods-ChatMe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ASCBU5GTTV;
 				INFOPLIST_FILE = ChatMe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
