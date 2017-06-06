@@ -16,16 +16,24 @@ import UIKit
 import Firebase
 
 class TableViewController: UITableViewController {
-    let array = ["zero","one","two","three","four","five","six"]
     let ref = FIRDatabase.database().reference()
     var convos: [Conversation]!
+    var alertTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         convos = [Conversation]()
         
+        alertTextField = UITextField()
+        
         loadConversations()
+        
+        
+//        self.ref.child("Users/jaredfitton").observeSingleEvent(of: .value, with: { (snapshot) in
+//            print(snapshot.value)
+//        })
+        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -122,18 +130,34 @@ class TableViewController: UITableViewController {
         let alert = UIAlertController(title: "New Conversation", message: nil, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
-        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: {
-            alert -> Void in
-            let firstTextField = alert.textFields![0] as UITextField
-        }))
-        
         alert.addTextField(configurationHandler: { (textField : UITextField!) -> Void in
+            self.alertTextField = textField
             textField.placeholder = "Enter Recipient's Username"
         })
+        
+        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: {
+            alert -> Void in
+            print(self.alertTextField.text!)
+            self.ref.child("Usernames/\((FIRAuth.auth()?.currentUser?.uid)!)").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if (snapshot.value as! String) != self.alertTextField.text! {
+                    let newConvo = Conversation(recipients: [self.alertTextField.text!], tableView: self.tableView)
+                    self.convos.insert(newConvo, at: 0)
+                    print("Created New Convo")
+                } else {
+                    print("Not Created")
+                }
+            })
+        }))
+
         self.present(alert, animated: true, completion: nil)
     }
     
     
+    @IBAction func signOut(_ sender: UIBarButtonItem) {
+        try! FIRAuth.auth()?.signOut()
+        self.dismiss(animated: true, completion: nil)
+    }
     
     
     // MARK: - Navigation

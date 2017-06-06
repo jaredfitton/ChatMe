@@ -21,18 +21,19 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         textField.delegate = self
         
+        self.navigationItem.title = conversation.getRecipients()[0]
+        
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
         
-        ref.child("Conversations/\(conversation.getConversationToken())/\(conversation.getCurrentUser())").observe(FIRDataEventType.value, with: { (snapshot) in
-            print("Called")
-            let pulledMessages = snapshot.value as? [[String:String]]
+        ref.child("Conversations/\(conversation.getConversationToken())").observe(FIRDataEventType.childAdded, with: { (snapshot) in
             self.ref.child("Conversations/\(self.conversation.getConversationToken())/\(self.conversation.getCurrentUser())").removeValue()
+            let pulledMessages = snapshot.value as? [[String:String]]
+            print("Called")
             if let messages = pulledMessages {
                 for m in messages {
-                    //Add message to the UI
                     for (key, value) in m {
                         self.conversation.addMessage(message: [key, value])
                     }
@@ -54,13 +55,11 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
         conversationScrollView.addSubview(contentView!)
         self.view.addSubview(conversationScrollView)
         
-        print(conversation.getMessages())
-        
         for (i, message) in conversation.getMessages().enumerated(){
             if(message[0] == conversation.getCurrentUser()){
                 let label = UILabel(frame: CGRect(x: Int(self.view.frame.width - 15 - CGFloat(message[1].characters.count*10)), y: 55 * i + 10, width: message[1].characters.count * 10, height: 50))
                 label.text = message[1]
-                label.backgroundColor = UIColor(red: 1, green: 1/86, blue: 1/107, alpha: 1)
+                label.backgroundColor = UIColor(red: 112/255, green: 152/255, blue: 216/255, alpha: 1)
                 label.layer.masksToBounds = true
                 label.layer.cornerRadius = 10
                 label.textAlignment = .center
@@ -68,7 +67,7 @@ class CoversationViewController: UIViewController, UITextFieldDelegate {
             } else {
                 let label = UILabel(frame: CGRect(x: 15, y:55 * i + 10, width: message[1].characters.count * 10, height: 50))
                 label.text = message[1]
-                label.backgroundColor = UIColor(red: 0, green: 82, blue: 207, alpha: 1)
+                label.backgroundColor = UIColor(red: 214/255, green: 64/255, blue: 64/255, alpha: 1)
                 label.layer.masksToBounds = true
                 label.layer.cornerRadius = 15
                 label.textAlignment = .center

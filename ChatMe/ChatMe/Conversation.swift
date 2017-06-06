@@ -43,12 +43,11 @@ class Conversation {
                 }
                 self.recipients = users
                 tableView.reloadData()
-                print(self.recipients)
             })
         })
     }
     
-    init(recipients: [String]) {
+    init(recipients: [String], tableView: UITableView) {
         self.recipients = recipients
         currentUser = ""
         messages = [[String]]()
@@ -58,20 +57,15 @@ class Conversation {
             self.numberOfUsedCodes = usedCodes.count
             self.conversationToken = self.generateToken(usedCodes: usedCodes) //Generate a new token for this conversation
             
+            
             self.ref.child("Usernames/\((FIRAuth.auth()?.currentUser?.uid)!)").observeSingleEvent(of: .value, with: { (snapshot) in
+                
                 self.currentUser = snapshot.value as! String
                 var users = recipients
-                for i in 0...(users.count-1) {
-                    if users[i] == self.currentUser {
-                        users.remove(at: i)
-                        break
-                    }
-                }
-                self.recipients = users
-                print(self.recipients)
+                users.append(self.currentUser)
+                self.ref.child("Conversations/\(self.conversationToken!)/Recipients").setValue(users)
+                tableView.reloadData()
             })
-            
-            self.ref.child("Conversations/\(self.conversationToken!)/Recipients").setValue(self.getRecipients())
         })
         
     }
@@ -101,27 +95,24 @@ class Conversation {
         self.ref.child("UsedConversationTokens").updateChildValues(["\(self.numberOfUsedCodes!)":self.conversationToken])
         //Add Conversation Token to UsedConversationTokens on Firebase
         
-        for userName in recipients { //Add Conversation Token to each recipient's list of conversations
-            ref.child("Users/\(userName)/Conversation_Tokens").observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                var numberOfConversations: Int?
-                numberOfConversations = Int(snapshot.childrenCount)
-                
-                if numberOfConversations == nil {
-                    numberOfConversations = 0
-                }
-                self.ref.child("Users/\(userName)/Conversation_Tokens").updateChildValues(["\(numberOfConversations!)":self.conversationToken])
-                
-                
-                let UID = FIRAuth.auth()?.currentUser?.uid
-                self.ref.child("Usernames/\(UID!)").observeSingleEvent(of: .value, with: { (snapshot) in
-                    if (snapshot.value! as! String) == userName {
-                        print("Found")
+
+        let UID = FIRAuth.auth()?.currentUser?.uid
+        self.ref.child("Usernames/\(UID!)").observeSingleEvent(of: .value, with: { (snapshot) in
+            var userNames = self.recipients
+            userNames?.append(snapshot.value as! String)
+            for user in userNames! { //Add Conversation Token to each recipient's list of conversations
+                self.ref.child("Users/\(user)/Conversation_Tokens").observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    var numberOfConversations: Int?
+                    numberOfConversations = Int(snapshot.childrenCount)
+                    
+                    if numberOfConversations == nil {
+                        numberOfConversations = 0
                     }
+                    self.ref.child("Users/\(user)/Conversation_Tokens").updateChildValues(["\(numberOfConversations!)":self.conversationToken])
                 })
-            
-            })
-        }
+            }
+        })
     }
     
     func getMessages() -> [[String]] {

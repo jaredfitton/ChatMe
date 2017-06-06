@@ -58,6 +58,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Messages" id="f8S-vY-y32">
+                        <barButtonItem key="leftBarButtonItem" title="Sign Out" id="Mvm-by-ToN">
+                            <connections>
+                                <action selector="signOut:" destination="Jfm-JA-zjz" id="MGY-2P-d65"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="6bf-nB-yLP">
                             <connections>
                                 <action selector="newMessage:" destination="Jfm-JA-zjz" id="YWL-x3-rhp"/>
@@ -293,7 +298,7 @@
                                             <constraint firstAttribute="width" constant="55" id="Il0-AL-1IE"/>
                                         </constraints>
                                     </view>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wkP-kb-wad">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wkP-kb-wad">
                                         <rect key="frame" x="63" y="0.0" width="311" height="55"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="55" id="2bq-tI-LE2"/>

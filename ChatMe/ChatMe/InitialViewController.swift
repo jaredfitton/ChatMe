@@ -16,7 +16,9 @@ class InitialViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-    
+        
+        //try! FIRAuth.auth()?.signOut()
+        
         if FIRAuth.auth()?.currentUser != nil {
             self.performSegue(withIdentifier: "toMainScreen", sender: nil)
         }
